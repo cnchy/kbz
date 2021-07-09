@@ -1,10 +1,10 @@
-#include <arpa/inet.h>
 #include <dirent.h>
 #include <math.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/syscall.h>
+#include <sys/uio.h>
 #include <unistd.h>
 
 typedef struct {
@@ -23,22 +23,8 @@ Longaddr StaticAddress[10];
 Datavalue DynamicData[10];
 
 pid_t target_pid = -1;
-int client, hero, size_w, px, py, fx = 0;
+int hero, size_w, px, py, fx = 0;
 long matrixaddr;
-
-void conn() {
-  struct sockaddr_in serverAddr;
-  if ((client = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-    exit(1);
-  } else {
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(5454);
-    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-  }
-  if (connect(client, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
-    exit(1);
-  }
-}
 
 int findpid(const char *process_name) {
   int id;
@@ -195,10 +181,10 @@ void data() {
 
 void buff(int pdid) {
   int order[2][4] = {{2, 3, 0, 1}, {0, 1, 2, 3}};
-  long libGameCore_startadr =
+  long libGameCore_startaddr =
       get_module_base(target_pid, (char *)"libGameCore.so:bss");
   long address =
-      ValueLmultiple(libGameCore_startadr + 0x20D0,
+      ValueLmultiple(libGameCore_startaddr + 0x20D0,
                      new long[5]{0x38, 0x18, 0x30, 0xA8, 0xE0}, (char *)"5");
   for (int k = 0; k < (readInt(address + 0x14) / 2); k++) {
     StaticAddress[k].buff = ValueLmultiple(
@@ -209,10 +195,10 @@ void buff(int pdid) {
 
 void game(int pdid) {
   hero = 0;
-  long libGameCore_startadr =
+  long libGameCore_startaddr =
       get_module_base(target_pid, (char *)"libGameCore.so:bss");
   long address =
-      ValueLmultiple(libGameCore_startadr + 0x20D0,
+      ValueLmultiple(libGameCore_startaddr + 0x20D0,
                      new long[4]{0x38, 0x18, 0x60, 0x58}, (char *)"4");
   for (int i = 0; i < readInt(address + 0x14); i++) {
     long Mainaddress = ValueLmultiple(
@@ -228,9 +214,9 @@ void game(int pdid) {
 }
 
 void matrix(int *pdid) {
-  long libil2cpp_startadr =
+  long libil2cpp_startaddr =
       get_module_base(target_pid, (char *)"libil2cpp.so:bss");
-  matrixaddr = ValueLmultiple(libil2cpp_startadr + 0xB45888,
+  matrixaddr = ValueLmultiple(libil2cpp_startaddr + 0xB45888,
                               new long[4]{0xA0, 0, 0x10, 0xC0}, (char *)"4");
   if (readInt(matrixaddr) > 0) {
     *pdid = 2, fx = 1;
@@ -272,7 +258,9 @@ void ok(long state) {
         DynamicData[i].enty = rect.Y;
         DynamicData[i].zhscd = readInt(StaticAddress[i].d) / 8192000;
         DynamicData[i].dcd = readInt(StaticAddress[i].zhs) / 8192000;
-        snprintf(pass, sizeof(pass), "%d,%lf,%lf,%lf,%d,%d,%lf,%lf,\n",
+        snprintf(pass, sizeof(pass),
+                 "英雄id：%d,血量百分比：%lf,地图坐标%lf,%lf,召唤师技能cd%d,"
+                 "大招cd%d,实体坐标%lf,%lf,\n",
                  DynamicData[i].id,    // 英雄id
                  DynamicData[i].hp,    // 血量百分比
                  DynamicData[i].mapX,  // 地图x
@@ -284,15 +272,13 @@ void ok(long state) {
         );
         strcat(stringData, pass);
       }
-      snprintf(stringBuff, sizeof(stringBuff), "%d,%d,%d,%d,\n",
-               DynamicData[0].buffcd, DynamicData[1].buffcd,
-               DynamicData[2].buffcd, DynamicData[3].buffcd);
+      snprintf(stringBuff, sizeof(stringBuff),
+               "我方蓝buffcd：%d, 我方红buffcd：%d, 敌方蓝buffcd：%d, 敌方红buffcd：%d,\n", DynamicData[0].buffcd,
+               DynamicData[1].buffcd, DynamicData[2].buffcd,
+               DynamicData[3].buffcd);
       strcat(stringData, stringBuff);
-      send(client, stringData, strlen(stringData), 0);
+      printf(stringData, stringBuff);
       usleep(1000);
-    } else {
-      close(client);
-      break;
     }
     usleep(20000);
   }
@@ -312,11 +298,9 @@ int main() {
   }
   pthread_create(&(pthread[0]), NULL, &findpid1, NULL);
   getscreen();
-  conn();
   for (;;) {
     if (readInt(state) == 1) {
       usleep(200000);
-      conn();
       ok(state);
     }
     usleep(10000);
