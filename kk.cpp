@@ -1,10 +1,10 @@
 #include <arpa/inet.h>
 #include <dirent.h>
 #include <math.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/syscall.h>
-#include <thread>
 #include <unistd.h>
 
 typedef struct {
@@ -23,7 +23,7 @@ Longaddr StaticAddress[10];
 Datavalue DynamicData[10];
 
 pid_t target_pid = -1;
-int client, hero, size_w, px, py, fx = 0; 
+int client, hero, size_w, px, py, fx = 0;
 long matrixaddr;
 
 void conn() {
