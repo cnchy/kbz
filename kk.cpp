@@ -259,8 +259,8 @@ void ok(long state) {
         DynamicData[i].zhscd = readInt(StaticAddress[i].d) / 8192000;
         DynamicData[i].dcd = readInt(StaticAddress[i].zhs) / 8192000;
         snprintf(pass, sizeof(pass),
-                 "英雄id：%d,血量百分比：%lf,地图坐标%lf,%lf,召唤师技能cd%d,"
-                 "大招cd%d,实体坐标%lf,%lf,\n",
+                 "英雄id：%d,血量百分比：%lf,地图坐标：%lf,%lf,召唤师技能cd：%d,"
+                 "大招cd：%d,实体坐标：%lf,%lf,\n",
                  DynamicData[i].id,    // 英雄id
                  DynamicData[i].hp,    // 血量百分比
                  DynamicData[i].mapX,  // 地图x
