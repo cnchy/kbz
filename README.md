@@ -1,6 +1,6 @@
 直接termux 编译 
 
-```
+```bash
 pkg install clang termux-elf-cleaner
 clang kk.cpp -o kk -lstdc++ -pthread
 strip -s kk
@@ -26,3 +26,9 @@ c4droid 不支持 clang 但是可以编译，不过不推荐
 交叉编译...
 
 有什么问题可以发邮件 kekelanact@gmail.com
+
+如果你觉得对你有帮助或者想要更多帮助就给我打钱
+
+<div class="half">
+    <img src="img/w.jpg" width="180"/><img src="img/z.jpg" width="180"/>
+</div>
