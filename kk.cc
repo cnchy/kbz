@@ -261,7 +261,7 @@ void print(long state) {
                DynamicData[i].mapY, DynamicData[i].dcd, DynamicData[i].zhscd,
                DynamicData[i].entX, DynamicData[i].enty);
       }
-      printf("{b：%d, r：%d, eb：%d, er：%d}"
+      printf("{b：%d, r：%d, eb：%d, er：%d}",
              DynamicData[0].buffcd, DynamicData[1].buffcd,
              DynamicData[2].buffcd, DynamicData[3].buffcd);
       printf("\n");
