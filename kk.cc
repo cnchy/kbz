@@ -255,14 +255,13 @@ void print(long state) {
         DynamicData[i].enty = rect.Y;
         DynamicData[i].zhscd = readInt(StaticAddress[i].d) / 8192000;
         DynamicData[i].dcd = readInt(StaticAddress[i].zhs) / 8192000;
-        printf("英雄id：%d,血量百分比：%lf,地图坐标：%lf,%lf,召唤师技能cd：%d,"
-               "大招cd：%d,实体坐标：%lf,%lf,\n",
+        printf("{id：%d,b：%lf,mx：%lf,my：%lf,s：%d, u：%d,ex：%lf,ey：%lf}"
+              ,
                DynamicData[i].id, DynamicData[i].hp, DynamicData[i].mapX,
                DynamicData[i].mapY, DynamicData[i].dcd, DynamicData[i].zhscd,
                DynamicData[i].entX, DynamicData[i].enty);
       }
-      printf("我方蓝buffcd：%d, 我方红buffcd：%d, 敌方蓝buffcd：%d, "
-             "敌方红buffcd：%d,\n",
+      printf("{b：%d, r：%d, eb：%d, er：%d}"
              DynamicData[0].buffcd, DynamicData[1].buffcd,
              DynamicData[2].buffcd, DynamicData[3].buffcd);
       printf("\n");
