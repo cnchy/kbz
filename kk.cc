@@ -264,7 +264,7 @@ void print(long state) {
       printf("{b:%d, r:%d, eb:%d, er:%d}\n",
              DynamicData[0].buffcd, DynamicData[1].buffcd,
              DynamicData[2].buffcd, DynamicData[3].buffcd);
-      printf("\n");
+      
       usleep(1000);
     }
     usleep(20000);
