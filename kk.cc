@@ -255,7 +255,7 @@ void print(long state) {
         DynamicData[i].enty = rect.Y;
         DynamicData[i].zhscd = readInt(StaticAddress[i].d) / 8192000;
         DynamicData[i].dcd = readInt(StaticAddress[i].zhs) / 8192000;
-        printf("{id:%d,b:%lf,mx:%lf,my:%lf,s:%d, u:%d,ex:%lf,ey:%lf}\n"
+        printf("{id:%d,b:%lf,mx:%lf,my:%lf,s:%d,u:%d,ex:%lf,ey:%lf}\n"
               ,
                DynamicData[i].id, DynamicData[i].hp, DynamicData[i].mapX,
                DynamicData[i].mapY, DynamicData[i].dcd, DynamicData[i].zhscd,
