@@ -255,13 +255,13 @@ void print(long state) {
         DynamicData[i].enty = rect.Y;
         DynamicData[i].zhscd = readInt(StaticAddress[i].d) / 8192000;
         DynamicData[i].dcd = readInt(StaticAddress[i].zhs) / 8192000;
-        printf("{id:%d,b:%lf,mx:%lf,my:%lf,s:%d, u:%d,ex:%lf,ey:%lf}"
+        printf("{id:%d,b:%lf,mx:%lf,my:%lf,s:%d, u:%d,ex:%lf,ey:%lf}\n"
               ,
                DynamicData[i].id, DynamicData[i].hp, DynamicData[i].mapX,
                DynamicData[i].mapY, DynamicData[i].dcd, DynamicData[i].zhscd,
                DynamicData[i].entX, DynamicData[i].enty);
       }
-      printf("{b:%d, r:%d, eb:%d, er:%d}",
+      printf("{b:%d, r:%d, eb:%d, er:%d}\n",
              DynamicData[0].buffcd, DynamicData[1].buffcd,
              DynamicData[2].buffcd, DynamicData[3].buffcd);
       printf("\n");
